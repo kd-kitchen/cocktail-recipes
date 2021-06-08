@@ -1,0 +1,38 @@
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [":5000"],
+          "routes": [
+            {
+              "group": "backend",
+              "match": [{ "path": ["/api/*"] }],
+              "handle": [
+                {
+                  "handler": "rewrite",
+                  "strip_path_prefix": "/api"
+                },
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": ":8080" }]
+                }
+              ],
+              "terminal": true
+            },
+            {
+              "group": "frontend",
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": ":3000" }]
+                }
+              ],
+              "terminal": true
+            }
+          ]
+        }
+      }
+    }
+  }
+}
