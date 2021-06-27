@@ -21,6 +21,17 @@
               "terminal": true
             },
             {
+              "group": "images",
+              "match": [{ "path": ["/images/*"] }],
+              "handle": [
+                {
+                  "handler": "reverse_proxy",
+                  "upstreams": [{ "dial": ":8080" }]
+                }
+              ],
+              "terminal": true
+            },
+            {
               "group": "frontend",
               "handle": [
                 {
